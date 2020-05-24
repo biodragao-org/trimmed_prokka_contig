@@ -1,29 +1,34 @@
-
-ch_refFILE = Channel.value("$baseDir/refFILE")
-
-inputFilePattern = "./*_{R1,R2}.fastq.gz"
-Channel.fromFilePairs(inputFilePattern)
-        .into {  ch_in_PROCESS }
-
-
-
-process process {
-#    publishDir 'results/PROCESS'
-#    container 'PROCESS_CONTAINER'
+#!/usr/bin/env nextflow
+/*
+#==============================================
+# read genomes
+#==============================================
+*/
 
 
-    input:
-    set genomeFileName, file(genomeReads) from ch_in_PROCESS
-
-    output:
-    path("""${PROCESS_OUTPUT}""") into ch_out_PROCESS
+Channel.fromPath("./*_scaffolds.fasta")
+        .into { ch_in_prokka }
 
 
-    script:
-    #FIXME
-    genomeName= genomeFileName.toString().split("\\_")[0]
-    
-    """
-    CLI PROCESS
-    """
+/*
+#==============================================
+# prokka
+#==============================================
+*/
+
+
+process prokka {
+   container 'quay.io/biocontainers/prokka:1.14.6--pl526_0'
+   publishDir 'results/prokka'
+
+   input:
+   path bestContig from ch_in_prokka
+
+   script:
+   genomeName = bestContig.getName().split("\\_")[0]
+
+   """
+   prokka --outdir ./${genomeName}_prokka --prefix $genomeName ${bestContig}
+   """
+
 }
