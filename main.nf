@@ -24,6 +24,10 @@ process prokka {
    input:
    path bestContig from ch_in_prokka
 
+   output:
+   path("""${genomeName}_prokka""") into ch_out_prokka
+
+
    script:
    genomeName = bestContig.getName().split("\\_")[0]
 
