@@ -5,7 +5,7 @@
 #==============================================
 */
 
-
+// intented to be with the output of spades process
 Channel.fromPath("./*_scaffolds.fasta")
         .into { ch_in_prokka }
 
