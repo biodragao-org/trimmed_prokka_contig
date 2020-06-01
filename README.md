@@ -1,5 +1,5 @@
 # prokka_process
 
-The nextflow version of `prokka` analysis pipeline
+The nextflow wrapper for the `prokka` process.
 
 https://github.com/nextflow-hub/trimmed_prokka_contig
