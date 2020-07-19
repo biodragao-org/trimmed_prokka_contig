@@ -1,4 +1,15 @@
 #!/usr/bin/env nextflow
+
+
+/*
+#==============================================
+# params
+#==============================================
+*/
+
+params.saveBy = 'copy'
+
+
 /*
 #==============================================
 # read genomes
@@ -19,7 +30,7 @@ Channel.fromPath("./*_scaffolds.fasta")
 
 process prokka {
    container 'quay.io/biocontainers/prokka:1.14.6--pl526_0'
-   publishDir 'results/prokka'
+   publishDir 'results/prokka', mode: params.saveBy
 
    input:
    path bestContig from ch_in_prokka
