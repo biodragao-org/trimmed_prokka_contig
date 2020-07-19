@@ -36,14 +36,14 @@ process prokka {
    path bestContig from ch_in_prokka
 
    output:
-   path("""${genomeName}_prokka""") into ch_out_prokka
+   path("""${genomeName}""") into ch_out_prokka
 
 
    script:
    genomeName = bestContig.getName().split("\\_")[0]
 
    """
-   prokka --outdir ./${genomeName}_prokka --prefix $genomeName ${bestContig}
+   prokka --outdir ./${genomeName} --prefix $genomeName ${bestContig}
    """
 
 }
