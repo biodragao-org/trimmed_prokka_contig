@@ -29,21 +29,29 @@ Channel.fromPath("./*_scaffolds.fasta")
 
 
 process prokka {
-   container 'quay.io/biocontainers/prokka:1.14.6--pl526_0'
-   publishDir 'results/prokka', mode: params.saveBy
+    container 'quay.io/biocontainers/prokka:1.14.6--pl526_0'
+    publishDir 'results/prokka', mode: params.saveBy
 
-   input:
-   path bestContig from ch_in_prokka
+    input:
+    path bestContig from ch_in_prokka
 
-   output:
-   path("""${genomeName}""") into ch_out_prokka
+    output:
+    path("""${genomeName}""") into ch_out_prokka
 
 
-   script:
-   genomeName = bestContig.getName().split("\\_")[0]
+    script:
+    genomeName = bestContig.getName().split("\\_")[0]
 
-   """
-   prokka --outdir ./${genomeName} --prefix $genomeName ${bestContig}
-   """
+    """
+    prokka --outdir ./${genomeName} --prefix $genomeName ${bestContig}
+    """
 
 }
+
+
+
+/*
+#==============================================
+# extra
+#==============================================
+*/
