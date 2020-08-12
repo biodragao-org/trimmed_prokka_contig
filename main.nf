@@ -7,7 +7,9 @@
 #==============================================
 */
 
-params.saveBy = 'copy'
+params.spadesResults = 'results/spades/*_scaffolds.fasta'
+params.resultsDir = 'results/prokka'
+params.saveMode = 'copy'
 
 
 /*
@@ -16,8 +18,7 @@ params.saveBy = 'copy'
 #==============================================
 */
 
-// NOTE: intented to be with the output of spades process
-Channel.fromPath("./*_scaffolds.fasta")
+Channel.fromPath("""${params.spadesResults}""")
         .into { ch_in_prokka }
 
 
@@ -29,8 +30,8 @@ Channel.fromPath("./*_scaffolds.fasta")
 
 
 process prokka {
+    publishDir params.resultsDir, mode: params.saveMode
     container 'quay.io/biocontainers/prokka:1.14.6--pl526_0'
-    publishDir 'results/prokka', mode: params.saveBy
 
     input:
     path bestContig from ch_in_prokka
